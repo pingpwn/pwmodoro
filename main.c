@@ -3,8 +3,8 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
-
-char br = 'n'; // Flag that determines if we're on a break (friends refernece lol)
+#include <stdbool.h>
+bool br = false; // Flag that determines if we're on a break (friends refernece lol)
 guint threadID = 0;
 GtkWidget *tomato;
 GtkWidget *label;
@@ -37,8 +37,10 @@ gboolean update_time(gpointer data) {
     
     // If we reach the end of the timer, we start the break (the user has to press "Break")
     if (rawtime > firetime) {
-        br = 'y';
-        gtk_button_set_label(GTK_BUTTON (start_button), "Break");
+        br = !br;
+        if (br) gtk_button_set_label(GTK_BUTTON (start_button), "Break");
+        else gtk_button_set_label(GTK_BUTTON (start_button), "Start");
+        gtk_widget_set_sensitive(start_button, TRUE);
         g_source_remove(threadID);
         threadID = 0;   
     }
@@ -46,15 +48,14 @@ gboolean update_time(gpointer data) {
 }
 // Function when button pressed
 void start_func() {
-    gtk_button_set_label(GTK_BUTTON (start_button), "Reset");
+    gtk_widget_set_sensitive(start_button, FALSE);
     time(&rawtime);
-    
     // We set the timer for delta minutes if not on break, else for 5 minutes 
-    if (br == 'n'){
-        firetime = rawtime + delta*60;
+    if (!br){
+        firetime = rawtime + 10;//delta*60;
         threadID = g_timeout_add_seconds(1, update_time, NULL);
     } else {
-        firetime = rawtime + 5*60;
+        firetime = rawtime + 5;//*60;
         threadID = g_timeout_add_seconds(1, update_time, NULL);
     }
 	return;
@@ -78,7 +79,6 @@ int main(int argc, char *argv[]) {
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
     gtk_window_set_title(GTK_WINDOW(window), "Pwmodoro");
     gtk_container_add(GTK_CONTAINER(window), vbox);
-
     // Start button init
     start_button = gtk_button_new_with_label("Start");
     
@@ -86,7 +86,6 @@ int main(int argc, char *argv[]) {
     
     label = gtk_label_new("");
     gtk_label_set_markup(GTK_LABEL(label), "<span font='36'>00:00</span>");
-    
     // Add elements to vbox
     gtk_box_pack_start(GTK_BOX(vbox), tomato, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), label, TRUE, TRUE, 0);
