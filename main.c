@@ -52,10 +52,10 @@ void start_func() {
     time(&rawtime);
     // We set the timer for delta minutes if not on break, else for 5 minutes 
     if (!br){
-        firetime = rawtime + 10;//delta*60;
+        firetime = rawtime + delta*60;
         threadID = g_timeout_add_seconds(1, update_time, NULL);
     } else {
-        firetime = rawtime + 5;//*60;
+        firetime = rawtime + 5*60;
         threadID = g_timeout_add_seconds(1, update_time, NULL);
     }
 	return;
