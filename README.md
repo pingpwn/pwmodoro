@@ -1,5 +1,5 @@
 # pwmodoro
-
+![pomodoro](tomato.png)
 
 ### Setup
 + Install Gtk3.0 following the [instructions](https://www.gtk.org/docs/installations/linux/), according to your distro.
