@@ -22,7 +22,7 @@ static void on_window_closed(GtkWidget *widget, gpointer data) {
 gboolean update_time(gpointer data) {
     int sec, h, m, s;
     struct tm *timeinfo;
-    char buffer[9]; 
+    char buffer[45]; 
 
     // Get timer seconds
     sec = firetime - rawtime;
