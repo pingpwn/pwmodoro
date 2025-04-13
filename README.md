@@ -1,7 +1,7 @@
 # pwmodoro
 ![pomodoro](tomato.png)
 
-A minimal pomodoro timer written in 100 lines of pure C!
+A minimal pomodoro timer written in under 100 lines of pure C!
 
 
 ### Setup
